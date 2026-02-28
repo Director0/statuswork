@@ -8,38 +8,36 @@
 //  { type: "emoji",  value: "🌐" }
 //      → any emoji or unicode character
 //
-//  { type: "lucide", value: "Globe" }
-//      → Lucide icon name. Full list: https://lucide.dev/icons/
-//        Use the PascalCase name shown on that page.
-//        e.g. "ShieldCheck", "Database", "Zap", "Rocket", "Globe"
+//  { type: "lucide", value: "globe" }
+//      → Lucide icon name (kebab-case). Full list: https://lucide.dev/icons/
+//        Examples: "globe", "shield-check", "database", "zap", "rocket"
 //
 //  { type: "img", value: "https://example.com/icon.svg" }
-//      → any image URL (SVG, PNG, WebP…) or relative path like "icons/logo.svg"
+//      → any image URL (SVG, PNG, WebP…) or relative path like "icons/logo.png"
 //
-//  { type: "svg", value: "<svg xmlns=…>…</svg>" }
-//      → raw inline SVG string pasted directly
+//  { type: "svg", value: "<svg>…</svg>" }
+//      → paste any raw SVG string directly
 //
-//  LOGO additionally supports:
+//  LOGO also supports:
 //  { type: "text", value: "⬡ ACME" }
-//      → plain text / emoji logo (default)
+//      → plain text / emoji (default)
 // ============================================================
 
 const CONFIG = {
 
   // ── BRAND ────────────────────────────────────────────────
   brand: {
-    name: "Acme Systems",
-    logo: { type: "text", value: "⬡ ACME" },
-    // Examples:
-    // logo: { type: "img",    value: "https://example.com/logo.svg" },
-    // logo: { type: "lucide", value: "Hexagon" },
-    // logo: { type: "svg",    value: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='currentColor'/></svg>" },
+    name: "Stolpovsky",
+    logo: { type: "text", value: "Stolposky" },
+    // logo: { type: "lucide", value: "hexagon" },
+    logo: { type: "img", value: "seng.svg" },
+    // logo: { type: "emoji", value: "🛰️" },
     logoUrl: "/",
   },
 
   // ── SERVERS ──────────────────────────────────────────────
   // access: 1=OK  2=DEGRADED  3=MAINTENANCE  4=UNKNOWN
-  // checkUrl: live-pinged on page load to verify reachability
+  // checkUrl: live-pinged via fetch on page load
   servers: [
     { name: "API Gateway",       checkUrl: "https://httpbin.org/status/200", access: 1 },
     { name: "Auth Service",      checkUrl: "https://httpbin.org/status/200", access: 1 },
@@ -57,24 +55,20 @@ const CONFIG = {
     { name: "Analytics",      access: 1 },
   ],
 
-  // ── GLOBAL SERVICE ICONS ─────────────────────────────────
-  // Referenced by id throughout the rest of the config.
+  // ── GLOBAL ICONS ─────────────────────────────────────────
+  // Referenced by `iconId` everywhere else.
   // access: 1=OK  2=DEGRADED  3=MAINTENANCE  4=UNKNOWN
   globalIcons: [
-    { id: "globe",  access: 1, icon: { type: "lucide", value: "Globe" }        },
-    { id: "db",     access: 2, icon: { type: "lucide", value: "Database" }     },
-    { id: "shield", access: 1, icon: { type: "lucide", value: "ShieldCheck" }  },
-    { id: "rocket", access: 3, icon: { type: "lucide", value: "Rocket" }       },
-    { id: "bolt",   access: 4, icon: { type: "lucide", value: "Zap" }          },
+    { id: "globe",  access: 1, icon: { type: "lucide", value: "globe"         } },
+    { id: "db",     access: 2, icon: { type: "lucide", value: "database"       } },
+    { id: "shield", access: 1, icon: { type: "lucide", value: "shield-check"   } },
+    { id: "rocket", access: 3, icon: { type: "lucide", value: "rocket"         } },
+    { id: "bolt",   access: 4, icon: { type: "lucide", value: "zap"            } },
 
-    // Emoji example:
-    // { id: "fire", access: 2, icon: { type: "emoji", value: "🔥" } },
-
-    // Image URL example:
-    // { id: "aws", access: 1, icon: { type: "img", value: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" } },
-
-    // Inline SVG example:
-    // { id: "custom", access: 1, icon: { type: "svg", value: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><rect x='3' y='3' width='18' height='18' rx='3'/><path d='M3 9h18'/></svg>" } },
+    // More examples:
+    // { id: "fire",   access: 2, icon: { type: "emoji", value: "🔥" } },
+    // { id: "aws",    access: 1, icon: { type: "img",   value: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" } },
+    // { id: "custom", access: 1, icon: { type: "svg",   value: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='12' r='10'/></svg>" } },
   ],
 
   // ── SERVICE STATUS CARDS (right panel) ───────────────────
@@ -87,19 +81,19 @@ const CONFIG = {
   ],
 
   // ── STATUS MESSAGES ──────────────────────────────────────
-  // heroIcon is optional — uses emoji as fallback.
+  // heroIcon is optional (falls back to emoji).
   // Set `current: true` on EXACTLY ONE entry.
   statusMessages: [
-    { title: "All Systems Operational", emoji: "✅", heroIcon: { type: "lucide", value: "CheckCircle2"   }, desc: "Everything is running smoothly.",                                       current: false },
-    { title: "Partial Outage",          emoji: "⚠️", heroIcon: { type: "lucide", value: "AlertTriangle"  }, desc: "Some services are experiencing issues. Our team is on it.",             current: true  },
-    { title: "Major Outage",            emoji: "🔴", heroIcon: { type: "lucide", value: "XCircle"        }, desc: "We are experiencing a major disruption. Updates every 15 min.",         current: false },
-    { title: "Under Maintenance",       emoji: "🔧", heroIcon: { type: "lucide", value: "Wrench"         }, desc: "Scheduled maintenance in progress. Back shortly.",                      current: false },
-    { title: "Investigating",           emoji: "🔍", heroIcon: { type: "lucide", value: "Search"         }, desc: "We are investigating reports of issues.",                               current: false },
+    { title: "All Systems Operational", emoji: "✅", heroIcon: { type: "lucide", value: "check-circle-2"  }, desc: "Everything is running smoothly.",                               current: true },
+    { title: "Partial Outage",          emoji: "⚠️", heroIcon: { type: "lucide", value: "alert-triangle"  }, desc: "Some services are experiencing issues. Our team is on it.",     current: false  },
+    { title: "Major Outage",            emoji: "🔴", heroIcon: { type: "lucide", value: "x-circle"        }, desc: "We are experiencing a major disruption. Updates every 15 min.", current: false },
+    { title: "Under Maintenance",       emoji: "🔧", heroIcon: { type: "lucide", value: "wrench"           }, desc: "Scheduled maintenance in progress. Back shortly.",              current: false },
+    { title: "Investigating",           emoji: "🔍", heroIcon: { type: "lucide", value: "search"           }, desc: "We are investigating reports of issues.",                       current: false },
   ],
 
   // ── SERVICE MESSAGE POPUPS ───────────────────────────────
-  // Shown as a centred popup when the user clicks a matching row.
-  // btnUrl: optional href for the button (default "#").
+  // Shown as a popup when user clicks a matching server/service row.
+  // `title` must exactly match the server or service name (case-insensitive).
   serviceMessages: [
     {
       iconId:   "db",
@@ -119,7 +113,7 @@ const CONFIG = {
     },
   ],
 
-  // ── SERVICE ALERTS (persistent banners at bottom of left panel) ──
+  // ── SERVICE ALERTS (persistent banners, bottom of left panel) ──
   serviceAlerts: [
     {
       iconId: "bolt",

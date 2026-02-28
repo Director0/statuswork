@@ -6,8 +6,6 @@
 <title>Status</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-<!-- Lucide icons — loaded once, used everywhere -->
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,8 +24,8 @@
   --deg-bg: #fef3c7;
   --mnt-bg: #ede9fe;
   --unk-bg: #f1f5f9;
-  --radius: 14px;
-  --shadow: 0 2px 24px 0 rgba(0,0,0,.07);
+  --r:      14px;
+  --sh:     0 2px 24px 0 rgba(0,0,0,.07);
 }
 
 html, body { height: 100%; }
@@ -40,7 +38,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   opacity: 0;
-  transition: opacity .5s ease;
+  transition: opacity .45s ease;
 }
 body.ready { opacity: 1; }
 
@@ -50,24 +48,20 @@ body.ready { opacity: 1; }
   display: flex; align-items: center; justify-content: center;
   background: var(--bg);
   z-index: 9999;
-  transition: opacity .4s ease, visibility .4s ease;
+  transition: opacity .35s ease, visibility .35s ease;
 }
-#loader.hidden { opacity: 0; visibility: hidden; }
+#loader.gone { opacity: 0; visibility: hidden; pointer-events: none; }
 .spinner {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   border: 2.5px solid #e2e0da;
   border-top-color: var(--ink);
   border-radius: 50%;
-  animation: spin .75s linear infinite;
+  animation: spin .7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── LAYOUT ── */
-.layout {
-  display: flex;
-  flex: 1;
-  min-height: 100vh;
-}
+.layout { display: flex; flex: 1; min-height: 100vh; }
 
 /* ── LEFT ── */
 .left {
@@ -81,97 +75,81 @@ body.ready { opacity: 1; }
 
 /* ── LOGO ── */
 .logo {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -.02em;
-  color: var(--ink);
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
   margin-bottom: 64px;
   line-height: 1;
 }
-.logo .icon-wrap {
+.logo-icon {
+  width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px;
   flex-shrink: 0;
 }
-.logo .icon-wrap svg { width: 100%; height: 100%; }
-.logo .icon-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.logo-icon svg, .logo-icon img { width: 100%; height: 100%; }
 
 /* ── PANEL INNER ── */
-.panel-inner {
-  max-width: 380px;
-  margin: 0 auto;
-  width: 100%;
-}
+.panel-inner { max-width: 380px; margin: 0 auto; width: 100%; }
 
-.section-label {
+.sec-label {
   font-family: 'DM Mono', monospace;
-  font-size: .68rem;
-  letter-spacing: .12em;
+  font-size: .67rem;
+  letter-spacing: .13em;
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 14px;
 }
 
 /* ── STATUS ROW ── */
-.status-row {
+.srow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 8px;
-  border-bottom: 1px solid #f0ede8;
-  cursor: pointer;
-  border-radius: 8px;
-  margin: 0 -8px;
-  transition: background .15s;
   gap: 8px;
+  padding: 12px 8px;
+  margin: 0 -8px;
+  border-bottom: 1px solid #f0ede8;
+  border-radius: 8px;
+  cursor: default;
+  transition: background .15s;
 }
-.status-row:hover { background: #faf9f7; }
-.status-row:last-child { border-bottom: none; }
+.srow.clickable { cursor: pointer; }
+.srow.clickable:hover { background: #faf9f7; }
+.srow:last-child { border-bottom: none; }
 
 .row-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
+  display: flex; align-items: center;
+  gap: 10px; min-width: 0;
 }
-
 .ping-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--unk);
-  flex-shrink: 0;
-  transition: background .3s;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--unk); flex-shrink: 0;
+  transition: background .4s;
 }
-
 .row-name {
-  font-size: .9rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: .9rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
+/* ── BADGE ── */
 .badge {
   font-family: 'DM Mono', monospace;
-  font-size: .65rem;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 99px;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  flex-shrink: 0;
+  font-size: .64rem; font-weight: 500;
+  padding: 3px 9px; border-radius: 99px;
+  letter-spacing: .04em; text-transform: uppercase;
+  flex-shrink: 0; white-space: nowrap;
 }
-
-/* access colours */
 .a1 { background: var(--ok-bg);  color: #15803d; }
 .a2 { background: var(--deg-bg); color: #b45309; }
 .a3 { background: var(--mnt-bg); color: #4338ca; }
 .a4 { background: var(--unk-bg); color: #475569; }
 
+/* dot colours */
 .dot-a1 { background: var(--ok);  }
 .dot-a2 { background: var(--deg); }
 .dot-a3 { background: var(--mnt); }
@@ -179,52 +157,33 @@ body.ready { opacity: 1; }
 
 .divider { height: 32px; }
 
-/* ── ALERTS STRIP ── */
-.alerts-wrap {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+/* ── ALERTS ── */
+.alerts-wrap { margin-top: 40px; display: flex; flex-direction: column; gap: 10px; }
 .alert-strip {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: var(--r); padding: 14px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
   animation: fadeUp .4s ease both;
 }
-.alert-icon-wrap {
-  flex-shrink: 0;
-  width: 28px; height: 28px;
+.alert-ic {
+  flex-shrink: 0; width: 24px; height: 24px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-  line-height: 1;
+  font-size: 1.1rem; line-height: 1;
 }
-.alert-icon-wrap svg { width: 20px; height: 20px; }
-.alert-icon-wrap img { width: 20px; height: 20px; object-fit: contain; }
+.alert-ic svg { width: 18px; height: 18px; }
+.alert-ic img { width: 18px; height: 18px; object-fit: contain; }
 .alert-body { flex: 1; }
 .alert-title { font-size: .82rem; font-weight: 700; margin-bottom: 3px; }
-.alert-text {
-  font-family: 'DM Mono', monospace;
-  font-size: .72rem;
-  color: #92400e;
-  line-height: 1.5;
-}
+.alert-text  { font-family: 'DM Mono', monospace; font-size: .71rem; color: #92400e; line-height: 1.5; }
 
 /* ── RIGHT ── */
 .right {
   width: 48%;
   background: var(--bg);
   padding: 48px 52px 80px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
 }
-
 .right::before {
   content: '';
   position: absolute; inset: 0;
@@ -234,118 +193,60 @@ body.ready { opacity: 1; }
   );
   pointer-events: none;
 }
-
-.bin-pattern {
-  position: absolute;
-  top: -20px; right: -10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 7.5rem;
-  font-weight: 500;
-  line-height: 1;
-  color: rgba(0,0,0,.045);
-  letter-spacing: -.02em;
-  user-select: none;
-  pointer-events: none;
-  white-space: pre-wrap;
-  width: 260px;
+.bin-bg {
+  position: absolute; top: -20px; right: -10px;
+  font-family: 'DM Mono', monospace; font-size: 7rem; font-weight: 500;
+  line-height: 1; color: rgba(0,0,0,.04);
+  user-select: none; pointer-events: none;
+  white-space: pre-wrap; width: 260px;
 }
-
 .right-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 340px;
-  margin: 0 auto;
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  position: relative; z-index: 1;
+  max-width: 340px; margin: 0 auto; width: 100%;
+  flex: 1; display: flex; flex-direction: column;
 }
 
 /* ── HERO ── */
-.status-hero {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 40px;
-  padding-top: 24px;
+.hero {
+  display: flex; align-items: center;
+  gap: 18px; margin-bottom: 40px; padding-top: 24px;
 }
-
-.hero-icon-wrap {
-  width: 52px; height: 52px;
+.hero-ic {
+  width: 52px; height: 52px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 3rem;
-  line-height: 1;
+  font-size: 2.8rem; line-height: 1;
   animation: pulse 3s ease-in-out infinite;
 }
-.hero-icon-wrap svg  { width: 100%; height: 100%; }
-.hero-icon-wrap img  { width: 100%; height: 100%; object-fit: contain; }
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.06); }
-}
+.hero-ic svg { width: 100%; height: 100%; }
+.hero-ic img { width: 100%; height: 100%; object-fit: contain; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
 
 .hero-title { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
-.hero-desc  {
-  font-family: 'DM Mono', monospace;
-  font-size: .72rem;
-  color: var(--muted);
-  margin-top: 4px;
-  line-height: 1.5;
+.hero-desc  { font-family: 'DM Mono', monospace; font-size: .71rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+/* ── CARDS ── */
+.cards { display: flex; flex-direction: column; gap: 10px; }
+.card {
+  background: var(--white); border-radius: var(--r);
+  padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--sh); animation: fadeUp .5s ease both;
 }
-
-/* ── SERVICE CARDS ── */
-.status-cards { display: flex; flex-direction: column; gap: 10px; }
-
-.status-card {
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  box-shadow: var(--shadow);
-  animation: fadeUp .5s ease both;
-}
-
-.card-icon-wrap {
-  width: 40px; height: 40px;
+.card-ic {
+  width: 40px; height: 40px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  background: var(--bg);
-  flex-shrink: 0;
-  font-size: 1.4rem;
-  line-height: 1;
+  border-radius: 10px; background: var(--bg);
+  font-size: 1.3rem; line-height: 1;
 }
-.card-icon-wrap svg { width: 22px; height: 22px; }
-.card-icon-wrap img { width: 26px; height: 26px; object-fit: contain; }
-
+.card-ic svg { width: 22px; height: 22px; }
+.card-ic img { width: 24px; height: 24px; object-fit: contain; }
 .card-body { flex: 1; min-width: 0; }
-.card-name {
-  font-size: .88rem;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.card-desc {
-  font-family: 'DM Mono', monospace;
-  font-size: .68rem;
-  color: var(--muted);
-  margin-top: 2px;
-  line-height: 1.4;
-}
-
-.card-dot {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.card-name { font-size: .88rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-desc { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.card-dot  { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
 /* ── POPUP ── */
@@ -353,99 +254,56 @@ body.ready { opacity: 1; }
   position: fixed; inset: 0;
   background: rgba(15,14,13,0);
   display: flex; align-items: center; justify-content: center;
-  z-index: 500;
-  pointer-events: none;
-  transition: background .3s ease;
+  z-index: 500; pointer-events: none;
+  transition: background .25s ease;
 }
-#overlay.active {
+#overlay.open {
   pointer-events: all;
-  background: rgba(15,14,13,.38);
+  background: rgba(15,14,13,.35);
 }
-
 .popup {
-  background: var(--white);
-  border-radius: 20px;
-  padding: 28px 28px 24px;
-  width: min(92vw, 380px);
-  box-shadow: 0 8px 48px rgba(0,0,0,.18);
-  transform: scale(.92) translateY(16px);
-  opacity: 0;
-  transition: transform .28s cubic-bezier(.34,1.4,.64,1), opacity .22s ease;
+  background: var(--white); border-radius: 20px;
+  padding: 28px 28px 24px; width: min(92vw, 390px);
+  box-shadow: 0 12px 56px rgba(0,0,0,.18);
+  transform: scale(.9) translateY(20px); opacity: 0;
+  transition: transform .28s cubic-bezier(.34,1.5,.64,1), opacity .2s ease;
   pointer-events: none;
 }
-#overlay.active .popup {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-  pointer-events: all;
+#overlay.open .popup {
+  transform: scale(1) translateY(0); opacity: 1; pointer-events: all;
 }
-
-.popup-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+.popup-head {
+  display: flex; align-items: center;
+  gap: 12px; margin-bottom: 18px;
 }
-
-.popup-icon-wrap {
-  width: 44px; height: 44px;
+.popup-ic {
+  width: 44px; height: 44px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 12px;
-  background: var(--bg);
-  flex-shrink: 0;
-  font-size: 1.6rem;
-  line-height: 1;
+  border-radius: 12px; background: var(--bg);
+  font-size: 1.5rem; line-height: 1;
 }
-.popup-icon-wrap svg { width: 26px; height: 26px; }
-.popup-icon-wrap img { width: 30px; height: 30px; object-fit: contain; }
-
+.popup-ic svg { width: 26px; height: 26px; }
+.popup-ic img { width: 28px; height: 28px; object-fit: contain; }
 .popup-meta { flex: 1; min-width: 0; }
-.popup-name {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
+.popup-name { font-size: 1rem; font-weight: 700; }
+.popup-sub  { font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--muted); margin-top: 2px; }
+.popup-x    {
+  background: none; border: none; font-size: 1.1rem;
+  cursor: pointer; color: var(--muted); padding: 4px; line-height: 1;
+  flex-shrink: 0; transition: color .15s;
 }
-.popup-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: .65rem;
-  color: var(--muted);
-  margin-top: 2px;
-}
-.popup-close {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: var(--muted);
-  line-height: 1;
-  padding: 4px;
-  transition: color .15s;
-  flex-shrink: 0;
-}
-.popup-close:hover { color: var(--ink); }
-
+.popup-x:hover { color: var(--ink); }
 .popup-text {
-  font-family: 'DM Mono', monospace;
-  font-size: .76rem;
-  color: #4b4946;
-  line-height: 1.7;
-  margin-bottom: 24px;
+  font-family: 'DM Mono', monospace; font-size: .75rem;
+  color: #4b4946; line-height: 1.75; margin-bottom: 22px;
 }
-
 .popup-btn {
-  display: inline-block;
-  padding: 10px 22px;
-  border-radius: 99px;
-  color: #fff;
-  font-family: 'Syne', sans-serif;
-  font-size: .82rem;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity .2s, transform .15s;
-  letter-spacing: .01em;
+  display: inline-block; padding: 10px 22px; border-radius: 99px;
+  color: #fff; font-family: 'Syne', sans-serif; font-size: .82rem;
+  font-weight: 700; border: none; cursor: pointer; text-decoration: none;
+  transition: filter .18s, transform .15s; letter-spacing: .01em;
 }
-.popup-btn:hover  { opacity: .88; transform: translateY(-1px); }
+.popup-btn:hover  { filter: brightness(1.12); transform: translateY(-1px); }
 .popup-btn:active { transform: scale(.97); }
 
 /* ── RESPONSIVE ── */
@@ -453,366 +311,322 @@ body.ready { opacity: 1; }
   .layout { flex-direction: column; }
   .left, .right { width: 100%; padding: 36px 24px 48px; }
   .left { border-right: none; border-bottom: 1px solid rgba(0,0,0,.06); }
-  .bin-pattern { font-size: 4rem; opacity: .6; }
+  .bin-bg { font-size: 4rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- Loader -->
 <div id="loader"><div class="spinner"></div></div>
 
-<!-- Popup overlay -->
 <div id="overlay">
-  <div class="popup" id="popup">
-    <div class="popup-header">
-      <div class="popup-icon-wrap" id="p-icon"></div>
+  <div class="popup">
+    <div class="popup-head">
+      <div class="popup-ic" id="p-ic"></div>
       <div class="popup-meta">
         <div class="popup-name" id="p-name"></div>
         <div class="popup-sub"  id="p-sub"></div>
       </div>
-      <button class="popup-close" onclick="closePopup()">✕</button>
+      <button class="popup-x" id="p-close">✕</button>
     </div>
     <div class="popup-text" id="p-text"></div>
-    <a class="popup-btn" id="p-btn" href="#"></a>
+    <a class="popup-btn" id="p-btn" href="#" target="_blank" rel="noopener"></a>
   </div>
 </div>
 
 <div class="layout">
-
-  <!-- ── LEFT ── -->
   <section class="left">
-    <a class="logo" id="logo-el" href="/"></a>
-
+    <a class="logo" id="logo-a" href="/"></a>
     <div class="panel-inner">
-      <div class="section-label">Servers</div>
+      <div class="sec-label">Servers</div>
       <div id="server-list"></div>
-
       <div class="divider"></div>
-
-      <div class="section-label">Services</div>
+      <div class="sec-label">Services</div>
       <div id="service-list"></div>
-
       <div class="alerts-wrap" id="alerts-wrap"></div>
     </div>
   </section>
 
-  <!-- ── RIGHT ── -->
   <section class="right">
-    <div class="bin-pattern" id="bin-pattern" aria-hidden="true"></div>
+    <div class="bin-bg" id="bin-bg" aria-hidden="true"></div>
     <div class="right-inner">
-      <div class="status-hero">
-        <div class="hero-icon-wrap" id="hero-icon"></div>
+      <div class="hero">
+        <div class="hero-ic" id="hero-ic"></div>
         <div>
           <div class="hero-title" id="hero-title"></div>
           <div class="hero-desc"  id="hero-desc"></div>
         </div>
       </div>
-      <div class="section-label">Service overview</div>
-      <div class="status-cards" id="status-cards"></div>
+      <div class="sec-label">Service overview</div>
+      <div class="cards" id="cards"></div>
     </div>
   </section>
-
 </div>
 
+<!-- Load config first, then Lucide, then our app -->
 <script src="config.js"></script>
 <script>
-// ─────────────────────────────────────────────────────────
-//  ICON RENDERER
-//  Supports: emoji · lucide · img · svg
-// ─────────────────────────────────────────────────────────
+// ─── ICON RENDERER ────────────────────────────────────────
+// Uses data-lucide attributes + lucide.createIcons() so we never
+// touch the internal Lucide API directly.
+
+const ICON_STROKE = {
+  1: '#15803d',   // ok
+  2: '#b45309',   // degraded
+  3: '#4338ca',   // maintenance
+  4: '#64748b',   // unknown
+  hero: '#0f0e0d',
+  alert: '#92400e',
+};
 
 /**
- * Render an icon into `container`.
- * @param {HTMLElement} container  - element to fill
- * @param {Object}      iconDef    - { type, value } from CONFIG
- * @param {Object}      opts       - { color, size }
+ * Build DOM inside `el` for an icon definition.
+ * Returns the element (or a placeholder `<i>` for lucide icons
+ * that will be batch-resolved later by flushLucide()).
  */
-function renderIcon(container, iconDef, opts = {}) {
+function placeIcon(el, iconDef, strokeColor) {
   if (!iconDef) return;
+  el.innerHTML = '';
+
   const { type, value } = iconDef;
-  const color = opts.color || 'currentColor';
-  const size  = opts.size  || 22;
+  const color = strokeColor || 'currentColor';
 
-  container.innerHTML = '';
+  if (type === 'lucide') {
+    // We create an <i data-lucide="name"> and Lucide will replace it
+    const i = document.createElement('i');
+    i.dataset.lucide = value;
+    i.style.width  = '100%';
+    i.style.height = '100%';
+    i.style.color  = color; // lucide respects currentColor via stroke
+    el.style.color = color;
+    el.appendChild(i);
 
-  switch (type) {
-    case 'lucide': {
-      // Lucide creates a <svg> element via lucide.createElement
-      if (typeof lucide === 'undefined') {
-        container.textContent = '?';
-        break;
-      }
-      const iconFn = lucide.icons[value];
-      if (!iconFn) {
-        console.warn(`[icons] Lucide icon not found: "${value}"`);
-        container.textContent = '?';
-        break;
-      }
-      // lucide.createElement(iconName, attrs)
-      const el = lucide.createElement([
-        'svg',
-        {
-          xmlns: 'http://www.w3.org/2000/svg',
-          width: size,
-          height: size,
-          viewBox: '0 0 24 24',
-          fill: 'none',
-          stroke: color,
-          'stroke-width': '2',
-          'stroke-linecap': 'round',
-          'stroke-linejoin': 'round',
-        },
-        ...iconFn[2],
-      ]);
-      container.appendChild(el);
-      break;
+  } else if (type === 'svg') {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = value; // parse the string
+    const svg = tmp.querySelector('svg');
+    if (svg) {
+      svg.style.width  = '100%';
+      svg.style.height = '100%';
+      svg.setAttribute('stroke', color);
+      el.appendChild(svg);
     }
-    case 'svg': {
-      // Raw SVG string — sanitise by parsing, not innerHTML injection
-      const tmp = document.createElement('div');
-      tmp.innerHTML = value;
-      const svg = tmp.querySelector('svg');
-      if (svg) {
-        svg.style.width  = '100%';
-        svg.style.height = '100%';
-        container.appendChild(svg);
-      } else {
-        container.textContent = value;
-      }
-      break;
-    }
-    case 'img': {
-      const img = document.createElement('img');
-      img.src = value;
-      img.alt = '';
-      img.style.display = 'block';
-      container.appendChild(img);
-      break;
-    }
-    case 'emoji':
-    default:
-      container.textContent = value;
-      break;
+
+  } else if (type === 'img') {
+    const img = document.createElement('img');
+    img.src = value;
+    img.alt = '';
+    img.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain';
+    el.appendChild(img);
+
+  } else {
+    // emoji / text / default
+    el.textContent = value;
   }
 }
 
-// ─────────────────────────────────────────────────────────
-//  HELPERS
-// ─────────────────────────────────────────────────────────
-const $  = id => document.getElementById(id);
-const LABELS = { 1:'OK', 2:'Degraded', 3:'Maintenance', 4:'Unknown' };
-const ICON_COLORS = { 1:'#15803d', 2:'#b45309', 3:'#4338ca', 4:'#64748b' };
-
-function iconById(id) {
-  return CONFIG.globalIcons.find(i => i.id === id) || { icon: { type:'emoji', value:'❓' }, access: 4 };
+// Call after all icons are in DOM
+function flushLucide() {
+  if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+    lucide.createIcons();
+  }
 }
 
-function badgeHTML(access) {
+// ─── HELPERS ──────────────────────────────────────────────
+const g   = id => document.getElementById(id);
+const LABELS = { 1:'OK', 2:'Degraded', 3:'Maintenance', 4:'Unknown' };
+
+function iconById(id) {
+  return CONFIG.globalIcons.find(i => i.id === id)
+      || { icon: { type:'emoji', value:'❓' }, access: 4 };
+}
+
+function badge(access) {
   return `<span class="badge a${access}">${LABELS[access] || '?'}</span>`;
 }
 
-// ─────────────────────────────────────────────────────────
-//  BINARY BACKGROUND
-// ─────────────────────────────────────────────────────────
-(function buildBin() {
+function dotColors(access) {
+  return { 1:'#22c55e', 2:'#f59e0b', 3:'#6366f1', 4:'#94a3b8' }[access] || '#94a3b8';
+}
+
+// ─── BINARY PATTERN ───────────────────────────────────────
+(function() {
   let s = '';
   for (let r = 0; r < 12; r++) {
     for (let c = 0; c < 6; c++) s += Math.round(Math.random());
     s += '\n';
   }
-  $('bin-pattern').textContent = s;
+  g('bin-bg').textContent = s;
 })();
 
-// ─────────────────────────────────────────────────────────
-//  LOGO
-// ─────────────────────────────────────────────────────────
-(function buildLogo() {
-  const logoEl = $('logo-el');
-  logoEl.href = CONFIG.brand.logoUrl || '/';
-  const logo = CONFIG.brand.logo;
+// ─── LOGO ─────────────────────────────────────────────────
+(function() {
+  const a = g('logo-a');
+  const { name, logo, logoUrl } = CONFIG.brand;
+  a.href = logoUrl || '/';
+  document.title = 'Status — ' + name;
 
   if (!logo || logo.type === 'text') {
-    logoEl.textContent = logo ? logo.value : CONFIG.brand.name;
+    a.textContent = logo ? logo.value : name;
     return;
   }
 
-  // Icon + name
-  const wrap = document.createElement('span');
-  wrap.className = 'icon-wrap';
-  renderIcon(wrap, logo, { color: 'currentColor', size: 24 });
-  logoEl.appendChild(wrap);
+  const ic = document.createElement('span');
+  ic.className = 'logo-icon';
+  placeIcon(ic, logo, 'currentColor');
+  a.appendChild(ic);
 
-  const txt = document.createElement('span');
-  txt.textContent = CONFIG.brand.name;
-  logoEl.appendChild(txt);
-
-  document.title = 'Status — ' + CONFIG.brand.name;
+  const tx = document.createElement('span');
+  tx.textContent = name;
+  a.appendChild(tx);
 })();
 
-// ─────────────────────────────────────────────────────────
-//  HERO STATUS
-// ─────────────────────────────────────────────────────────
-(function buildHero() {
+// ─── HERO ─────────────────────────────────────────────────
+(function() {
   const cur = CONFIG.statusMessages.find(m => m.current) || CONFIG.statusMessages[0];
-  $('hero-title').textContent = cur.title;
-  $('hero-desc').textContent  = cur.desc;
-
-  const heroWrap = $('hero-icon');
-  const iconColor = '#0f0e0d';
-  if (cur.heroIcon) {
-    renderIcon(heroWrap, cur.heroIcon, { color: iconColor, size: 48 });
-  } else {
-    renderIcon(heroWrap, { type: 'emoji', value: cur.emoji }, {});
-  }
+  g('hero-title').textContent = cur.title;
+  g('hero-desc').textContent  = cur.desc;
+  placeIcon(g('hero-ic'), cur.heroIcon || { type:'emoji', value: cur.emoji }, ICON_STROKE.hero);
 })();
 
-// ─────────────────────────────────────────────────────────
-//  SERVER LIST
-// ─────────────────────────────────────────────────────────
-const serverList = $('server-list');
-
+// ─── SERVER LIST ──────────────────────────────────────────
 CONFIG.servers.forEach((srv, i) => {
+  const hasPopup = CONFIG.serviceMessages.some(m => m.title.toLowerCase() === srv.name.toLowerCase());
   const row = document.createElement('div');
-  row.className = 'status-row';
+  row.className = 'srow' + (hasPopup ? ' clickable' : '');
+
   row.innerHTML = `
     <div class="row-left">
-      <span class="ping-dot" id="pd-${i}"></span>
+      <span class="ping-dot" id="pd${i}" style="background:${dotColors(srv.access)}"></span>
       <span class="row-name">${srv.name}</span>
     </div>
-    ${badgeHTML(srv.access)}
+    ${badge(srv.access)}
   `;
-  row.addEventListener('click', () => tryShowPopup(srv.name));
-  serverList.appendChild(row);
-  setDotColor('pd-' + i, srv.access);
-  pingServer(srv, i);
+
+  if (hasPopup) row.addEventListener('click', () => openPopup(srv.name));
+  g('server-list').appendChild(row);
+
+  // Live ping
+  (async () => {
+    try {
+      const ctl = new AbortController();
+      const tid = setTimeout(() => ctl.abort(), 5000);
+      await fetch(srv.checkUrl, { method:'HEAD', mode:'no-cors', signal: ctl.signal });
+      clearTimeout(tid);
+    } catch {
+      // If config says OK but it's unreachable, show unknown dot
+      if (srv.access === 1) {
+        const dot = g('pd'+i);
+        if (dot) dot.style.background = '#94a3b8';
+      }
+    }
+  })();
 });
 
-async function pingServer(srv, i) {
-  try {
-    const ctl = new AbortController();
-    const tid = setTimeout(() => ctl.abort(), 5000);
-    await fetch(srv.checkUrl, { method: 'HEAD', mode: 'no-cors', signal: ctl.signal });
-    clearTimeout(tid);
-  } catch (e) {
-    if (srv.access === 1) setDotColor('pd-' + i, 4);
-  }
-}
-
-function setDotColor(id, access) {
-  const dot = $(id);
-  if (!dot) return;
-  const colors = { 1: '#22c55e', 2: '#f59e0b', 3: '#6366f1', 4: '#94a3b8' };
-  dot.style.background = colors[access] || colors[4];
-}
-
-// ─────────────────────────────────────────────────────────
-//  SERVICE LIST
-// ─────────────────────────────────────────────────────────
-const serviceList = $('service-list');
-
+// ─── SERVICE LIST ─────────────────────────────────────────
 CONFIG.services.forEach(svc => {
+  const hasPopup = CONFIG.serviceMessages.some(m => m.title.toLowerCase() === svc.name.toLowerCase());
   const row = document.createElement('div');
-  row.className = 'status-row';
+  row.className = 'srow' + (hasPopup ? ' clickable' : '');
   row.innerHTML = `
     <div class="row-left">
       <span class="row-name">${svc.name}</span>
     </div>
-    ${badgeHTML(svc.access)}
+    ${badge(svc.access)}
   `;
-  row.addEventListener('click', () => tryShowPopup(svc.name));
-  serviceList.appendChild(row);
+  if (hasPopup) row.addEventListener('click', () => openPopup(svc.name));
+  g('service-list').appendChild(row);
 });
 
-// ─────────────────────────────────────────────────────────
-//  SERVICE STATUS CARDS
-// ─────────────────────────────────────────────────────────
-const cardsEl = $('status-cards');
-
+// ─── CARDS ────────────────────────────────────────────────
 CONFIG.serviceStatus.forEach((item, i) => {
-  const gIcon = iconById(item.iconId);
+  const gi = iconById(item.iconId);
   const card = document.createElement('div');
-  card.className = 'status-card';
-  card.style.animationDelay = (i * 60 + 100) + 'ms';
+  card.className = 'card';
+  card.style.animationDelay = (i * 55 + 80) + 'ms';
   card.innerHTML = `
-    <div class="card-icon-wrap" id="ci-${i}"></div>
+    <div class="card-ic" id="ci${i}"></div>
     <div class="card-body">
       <div class="card-name">${item.name}</div>
       <div class="card-desc">${item.desc}</div>
     </div>
-    <div class="card-dot dot-a${gIcon.access}"></div>
+    <div class="card-dot dot-a${gi.access}"></div>
   `;
-  cardsEl.appendChild(card);
-  renderIcon($('ci-' + i), gIcon.icon, { color: ICON_COLORS[gIcon.access] || '#64748b', size: 22 });
+  g('cards').appendChild(card);
+  placeIcon(g('ci'+i), gi.icon, ICON_STROKE[gi.access]);
 });
 
-// ─────────────────────────────────────────────────────────
-//  PERSISTENT ALERTS
-// ─────────────────────────────────────────────────────────
-const alertsWrap = $('alerts-wrap');
-
+// ─── ALERTS ───────────────────────────────────────────────
 CONFIG.serviceAlerts.forEach((al, i) => {
-  const gIcon = iconById(al.iconId);
+  const gi = iconById(al.iconId);
   const el = document.createElement('div');
   el.className = 'alert-strip';
   el.innerHTML = `
-    <div class="alert-icon-wrap" id="ai-${i}"></div>
+    <div class="alert-ic" id="ai${i}"></div>
     <div class="alert-body">
       <div class="alert-title">${al.title}</div>
       <div class="alert-text">${al.text}</div>
     </div>
   `;
-  alertsWrap.appendChild(el);
-  renderIcon($('ai-' + i), gIcon.icon, { color: '#92400e', size: 20 });
+  g('alerts-wrap').appendChild(el);
+  placeIcon(g('ai'+i), gi.icon, ICON_STROKE.alert);
 });
 
-// ─────────────────────────────────────────────────────────
-//  POPUP
-// ─────────────────────────────────────────────────────────
-const overlay = $('overlay');
+// ─── POPUP ────────────────────────────────────────────────
+const overlay = g('overlay');
 
-function showPopup(msg) {
-  const gIcon = iconById(msg.iconId);
-  const pIconWrap = $('p-icon');
-  pIconWrap.innerHTML = '';
-  renderIcon(pIconWrap, gIcon.icon, { color: ICON_COLORS[gIcon.access] || '#64748b', size: 26 });
+function openPopup(name) {
+  const msg = CONFIG.serviceMessages.find(m => m.title.toLowerCase() === name.toLowerCase());
+  if (!msg) return;
 
-  $('p-name').textContent = msg.title;
-  $('p-sub').textContent  = LABELS[gIcon.access] || '';
-  $('p-text').textContent = msg.text;
+  const gi = iconById(msg.iconId);
+  placeIcon(g('p-ic'), gi.icon, ICON_STROKE[gi.access]);
+  // Flush lucide for popup icon too
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons({ nameAttr: 'data-lucide', attrs: { class: '' } });
+  }
 
-  const btn = $('p-btn');
-  btn.textContent     = msg.btnText;
-  btn.style.background = msg.btnColor || '#0f0e0d';
-  btn.href            = msg.btnUrl || '#';
+  g('p-name').textContent     = msg.title;
+  g('p-sub').textContent      = LABELS[gi.access] || '';
+  g('p-text').textContent     = msg.text;
 
-  overlay.classList.add('active');
+  const btn = g('p-btn');
+  btn.textContent       = msg.btnText;
+  btn.style.background  = msg.btnColor || '#0f0e0d';
+  btn.href              = msg.btnUrl   || '#';
+
+  overlay.classList.add('open');
 }
 
-function closePopup() {
-  overlay.classList.remove('active');
-}
+function closePopup() { overlay.classList.remove('open'); }
 
+g('p-close').addEventListener('click', closePopup);
 overlay.addEventListener('click', e => { if (e.target === overlay) closePopup(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
-function tryShowPopup(name) {
-  const msg = CONFIG.serviceMessages.find(
-    m => m.title.toLowerCase() === name.toLowerCase()
-  );
-  if (msg) showPopup(msg);
+// ─── REVEAL ───────────────────────────────────────────────
+// Load Lucide dynamically so we control timing; reveal once it's done.
+(function loadLucide() {
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js';
+  s.onload = function() {
+    flushLucide();
+    reveal();
+  };
+  s.onerror = function() {
+    // Lucide failed to load (offline?) — just reveal anyway
+    reveal();
+  };
+  document.head.appendChild(s);
+})();
+
+function reveal() {
+  g('loader').classList.add('gone');
+  document.body.classList.add('ready');
 }
 
-// ─────────────────────────────────────────────────────────
-//  REVEAL
-// ─────────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  // Give Lucide a moment to parse, then show
-  setTimeout(() => {
-    $('loader').classList.add('hidden');
-    document.body.classList.add('ready');
-  }, 700);
-});
+// Hard fallback: always reveal after 3 s no matter what
+setTimeout(reveal, 3000);
 </script>
 </body>
 </html>
