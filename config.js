@@ -111,6 +111,14 @@ const CONFIG = {
       btnText:  "See Schedule →",
       btnUrl:   "#",
     },
+    {
+      iconId:   "square-activity",
+      title:    "Lndcorpdynamics",
+      text:     "The ultimate ERP, EM and Accounting software by lndcorp - a business hub completly integrated with lndcorp services and AI.",
+      btnColor: "#6366f1",
+      btnText:  "Redirect →",
+      btnUrl:   "#",
+    },
   ],
 
   // ── SERVICE ALERTS (persistent banners, bottom of left panel) ──
