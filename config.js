@@ -27,7 +27,7 @@ const CONFIG = {
 
   // ── BRAND ────────────────────────────────────────────────
   brand: {
-    name: "SENG Pro",
+    name: "Stolpovsky",
     logo: { type: "text", value: "Stolposky" },
     // logo: { type: "lucide", value: "hexagon" },
     logo: { type: "img", value: "seng.svg" },
