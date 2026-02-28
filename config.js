@@ -27,7 +27,7 @@ const CONFIG = {
 
   // ── BRAND ────────────────────────────────────────────────
   brand: {
-    name: "Stolpovsky",
+    name: "SENG Pro",
     logo: { type: "text", value: "Stolposky" },
     // logo: { type: "lucide", value: "hexagon" },
     logo: { type: "img", value: "seng.svg" },
@@ -39,20 +39,20 @@ const CONFIG = {
   // access: 1=OK  2=DEGRADED  3=MAINTENANCE  4=UNKNOWN
   // checkUrl: live-pinged via fetch on page load
   servers: [
-    { name: "API Gateway",       checkUrl: "https://httpbin.org/status/200", access: 1 },
-    { name: "Auth Service",      checkUrl: "https://httpbin.org/status/200", access: 1 },
+    { name: "API-L Gateway",       checkUrl: "https://httpbin.org/status/200", access: 1 },
+    { name: "ID Auth Service",      checkUrl: "https://httpbin.org/status/200", access: 1 },
     { name: "Database Cluster",  checkUrl: "https://httpbin.org/status/503", access: 2 },
-    { name: "CDN Edge",          checkUrl: "https://httpbin.org/status/200", access: 3 },
-    { name: "WebSocket Server",  checkUrl: "https://httpbin.org/status/200", access: 4 },
+    { name: "Lndcorpcdn-1",          checkUrl: "https://httpbin.org/status/200", access: 3 },
+    { name: "NPP-promteh-00",  checkUrl: "https://httpbin.org/status/200", access: 4 },
   ],
 
   // ── SERVICES (display only, no ping) ─────────────────────
   services: [
-    { name: "Web Dashboard",  access: 1 },
-    { name: "Mobile Apps",    access: 1 },
-    { name: "Payments",       access: 2 },
-    { name: "Notifications",  access: 3 },
-    { name: "Analytics",      access: 1 },
+    { name: "SENG Dashboard",  access: 1 },
+    { name: "Lndcorpmail",    access: 1 },
+    { name: "Lndcorpdynamics",       access: 1 },
+    { name: "Lnd Administrator",  access: 1 },
+    { name: "AI Service",      access: 3 },
   ],
 
   // ── GLOBAL ICONS ─────────────────────────────────────────
@@ -117,7 +117,7 @@ const CONFIG = {
   serviceAlerts: [
     {
       iconId: "bolt",
-      title:  "Background Job Worker",
+      title:  "Security Notice",
       text:   "Worker health-checks are returning intermittent timeouts. Scheduled jobs may be delayed. We are monitoring the situation.",
     },
   ],
