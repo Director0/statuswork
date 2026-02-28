@@ -106,7 +106,7 @@ const CONFIG = {
     {
       iconId:   "rocket",
       title:    "Deploy Pipeline",
-      text:     "The deploy pipeline is under scheduled maintenance from 02:00 – 04:00 UTC. No new deployments can be triggered during this window. All running services remain unaffected.",
+      text:     "The deploy pipeline is under scheduled maintenance from 02:00 – 04:00 UTC. No new deployments can be triggered during this window. All running services remain unaffected. OK",
       btnColor: "#6366f1",
       btnText:  "See Schedule →",
       btnUrl:   "#",
