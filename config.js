@@ -39,11 +39,11 @@ const CONFIG = {
   // access: 1=OK  2=DEGRADED  3=MAINTENANCE  4=UNKNOWN
   // checkUrl: live-pinged via fetch on page load
   servers: [
-    { name: "API-L Gateway",       checkUrl: "https://httpbin.org/status/200", access: 1 },
-    { name: "ID Auth Service",      checkUrl: "https://httpbin.org/status/200", access: 1 },
-    { name: "Database Cluster",  checkUrl: "https://httpbin.org/status/503", access: 2 },
-    { name: "Lndcorpcdn-1",          checkUrl: "https://httpbin.org/status/200", access: 3 },
-    { name: "NPP-promteh-00",  checkUrl: "https://httpbin.org/status/200", access: 4 },
+    { name: "api.lndcdn.com",       checkUrl: "https://httpbin.org/status/200", access: 1 },
+    { name: "id.lndcorp.com",      checkUrl: "https://httpbin.org/status/200", access: 1 },
+    { name: "db.lndcdn.com",  checkUrl: "https://httpbin.org/status/503", access: 4 },
+    { name: "lndcorpcdn.com",          checkUrl: "https://httpbin.org/status/200", access: 3 },
+    { name: "npp-promteh.ru",  checkUrl: "https://httpbin.org/status/200", access: 1 },
   ],
 
   // ── SERVICES (display only, no ping) ─────────────────────
